@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class MovieDetail extends StatefulWidget {
   final posterUrl;
@@ -47,6 +48,27 @@ class _MovieDetailState extends State<MovieDetail> {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      body: SafeArea(
+        top: false,
+        bottom: false,
+        child: NestedScrollView(
+            headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+              return <Widget>[
+                SliverAppBar(
+                  expandedHeight: 200.0,
+                  elevation: 0.0,
+                  floating: true,
+                  flexibleSpace: FlexibleSpaceBar(
+                    background: Image.network('https://image.tmdb.org/t/p/w500${posterUrl}',
+                    fit : BoxFit.cover
+                    )
+                  ),
+                )
+              ];
+            },
+            body: Container(child: Text(title),)),
+      )
+    );
   }
 }
