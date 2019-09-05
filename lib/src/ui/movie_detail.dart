@@ -103,7 +103,11 @@ class _MovieDetailState extends State<MovieDetail> {
                             )
                         )
                       ],
-                    )
+                    ),
+                Container(
+                  margin: EdgeInsets.only(top: 10.0),
+                ),
+                    Text(descripcion)
                   ],
                 ),
             )
