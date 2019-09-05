@@ -52,7 +52,10 @@ class _MovieListState extends State<MovieList> with SingleTickerProviderStateMix
             childAspectRatio: 0.7),
         itemBuilder: (BuildContext context, int index) {
             return GridTile(
-              child: Text('${snapshot.data.results[index].title}'),
+              child: Image.network('https://image.tmdb.org/t/p/w185${snapshot.data.results[index].posterPath}',
+              fit: BoxFit.cover)
+              
+              ,
             );
         }
     );
