@@ -12,7 +12,7 @@ class MovieApiProvider {
     final response = await http.get(urlPopularMovies);
 
     if(response.statusCode == 200) {
-      MovieItem.fromJson(json.decode(response.body));
+     return MovieItem.fromJson(json.decode(response.body));
     } else {
       throw Exception('Fallo al obetener el listado de películas');
     }
