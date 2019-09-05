@@ -27,9 +27,6 @@ class _MovieListState extends State<MovieList> with SingleTickerProviderStateMix
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Popular movies')
-      ),
       body: FutureBuilder<MovieItem>(
           future: api.getMovieList(),
           builder: (context, snapshot) {
