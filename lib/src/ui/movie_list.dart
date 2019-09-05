@@ -52,12 +52,21 @@ class _MovieListState extends State<MovieList> with SingleTickerProviderStateMix
             childAspectRatio: 0.7),
         itemBuilder: (BuildContext context, int index) {
             return GridTile(
-              child: Image.network('https://image.tmdb.org/t/p/w185${snapshot.data.results[index].posterPath}',
-              fit: BoxFit.cover)
+              child: InkResponse(
+                enableFeedback: true,
+                child:  Image.network('https://image.tmdb.org/t/p/w185${snapshot.data.results[index]
+                        .posterPath}',
+                        fit: BoxFit.cover),
+                onTap: () => openDetailPelicula(snapshot.data, index),
+              ),
               
-              ,
+
             );
         }
     );
+  }
+
+  openDetailPelicula(MovieItem data, int index) {
+
   }
 }
