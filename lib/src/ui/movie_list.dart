@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movies_app/src/models/movie_item.dart';
 import 'package:movies_app/src/resources/movie_api_provider.dart';
+import 'package:movies_app/src/ui/movie_detail.dart';
 
 class MovieList extends StatefulWidget {
   @override
@@ -67,6 +68,18 @@ class _MovieListState extends State<MovieList> with SingleTickerProviderStateMix
   }
 
   openDetailPelicula(MovieItem data, int index) {
-
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (contex) {
+          return MovieDetail(
+            title: data.results[index].title,
+            posterUrl: data.results[index].posterPath,
+            descripcion: data.results[index].overview,
+            releaseDate: data.results[index].releaseDate,
+            voteAverage: data.results[index].voteAverage.toString(),
+            movieId: data.results[index].id
+          );
+        })
+      );
   }
 }
