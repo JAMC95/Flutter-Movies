@@ -75,7 +75,35 @@ class _MovieDetailState extends State<MovieDetail> {
                     Text(title, style: TextStyle(
                       fontSize: 25.0,
                       fontWeight: FontWeight.bold
-                    ))
+                    )),
+                    Container(
+                      margin: EdgeInsets.only(top: 8.0),
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Icon(
+                            Icons.star_border,
+                            color: Colors.blue
+                        ),
+                        Text(
+                            voteAverage,
+                            style: TextStyle(
+                                fontSize: 18.0,
+                                color: Colors.blue
+                        )
+                        ),
+                        Container(
+                            margin: EdgeInsets.only(left: 10.0),
+                        ),
+                        Text(
+                            releaseDate.toString(),
+                            style: TextStyle(
+                                fontSize: 18.0,
+                                fontStyle: FontStyle.italic
+                            )
+                        )
+                      ],
+                    )
                   ],
                 ),
             )
