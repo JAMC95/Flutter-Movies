@@ -1,5 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:movies_app/src/models/trailer_item.dart';
+import 'package:movies_app/src/resources/movie_api_provider.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 
 class MovieDetail extends StatefulWidget {
   final posterUrl;
@@ -30,6 +34,8 @@ class MovieDetail extends StatefulWidget {
 }
 
 class _MovieDetailState extends State<MovieDetail> {
+  MovieApiProvider api;
+
   final posterUrl;
   final descripcion;
   final releaseDate;
@@ -48,6 +54,7 @@ class _MovieDetailState extends State<MovieDetail> {
 
   @override
   Widget build(BuildContext context) {
+    api = new MovieApiProvider();
     return Scaffold(
       body: SafeArea(
         top: false,
@@ -107,12 +114,106 @@ class _MovieDetailState extends State<MovieDetail> {
                 Container(
                   margin: EdgeInsets.only(top: 10.0),
                 ),
-                    Text(descripcion)
+                    Text(descripcion),
+
+                    Container(
+                      margin: EdgeInsets.only(top: 10.0),
+                    ),
+                    Text(
+                      "Trailers",
+                      style: TextStyle(
+                          fontSize: 25.0,
+                          fontWeight: FontWeight.bold
+                      )
+                    ),
+                    FutureBuilder<TrailerItem>(
+                      builder: (context, trailerSnapShot) {
+                        if(trailerSnapShot.hasData) {
+                          if(trailerSnapShot.data.results.length > 0) {
+                              return trailerLayout(trailerSnapShot.data);
+                          } else {
+                            return noTrailer(trailerSnapShot.data);
+                          }
+                        } else {
+                          return Center(
+                            child: CircularProgressIndicator()
+                          );
+                        }
+                      },
+                      future: api.getVideos(movieId),
+                    )
                   ],
+
                 ),
             )
         ),
       )
     );
+  }
+
+  Widget noTrailer(TrailerItem data) {
+    return Center(child: Text('No hay vídeos disponibles'));
+  }
+
+  Widget trailerLayout(TrailerItem data) {
+    if(data.results.length > 1) {
+      return Row(
+        children: <Widget>[
+           trailerItemLayout(data, 0),
+           trailerItemLayout(data, 1)
+        ],
+      );
+    } else {
+      return Row(
+        children: <Widget>[
+          trailerItemLayout(data, 0)
+        ],
+      );
+    }
+  }
+
+  trailerItemLayout(TrailerItem data, int i) {
+    return Expanded (
+      child:  Column(
+        children: <Widget>[
+          Container(
+            margin: EdgeInsets.all(5.0),
+            height: 100.0,
+            color: Colors.grey,
+            child: Center(
+                child: IconButton(icon:
+                Icon(
+                    Icons.play_circle_filled)
+                    ,
+                    onPressed: () {
+                      _verVideo(data.results[i].key, data.results[i].site);
+                    })
+            ),
+          ),
+          Text(
+            data.results[i].name,
+            maxLines: 1,
+            overflow: TextOverflow.fade,
+          )
+        ],
+      )
+    );
+
+  }
+
+  Future _verVideo(String key, String site) async {
+    String videoBaseUrl = '';
+    if(site == 'YouTube') {
+      videoBaseUrl = 'https://www.youtube.com/watch?v=';
+    } else {
+      videoBaseUrl = 'https://vimeo.com/';
+    }
+
+    String url = videoBaseUrl + key;
+    if(await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'No se ha podido abrir el vídeo';
+    }
   }
 }
